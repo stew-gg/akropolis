@@ -2,6 +2,7 @@ package me.zetastormy.akropolis.module.modules.hotbar.items;
 
 import me.zetastormy.akropolis.module.modules.hotbar.HotbarItem;
 import me.zetastormy.akropolis.module.modules.hotbar.HotbarManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.EnderPearl;
@@ -24,9 +25,11 @@ public class EnderButt extends HotbarItem {
         if (player.hasCooldown(Material.ENDER_PEARL)) return;
 
         if (pearl == null) {
-            pearl = player.launchProjectile(EnderPearl.class);
-            pearl.setVelocity(pearl.getVelocity().multiply(1.1));
-            pearl.addPassenger(player);
+            pearl = player.getWorld().spawn(player.getEyeLocation(), EnderPearl.class, enderPearl -> {
+                enderPearl.addPassenger(player);
+                enderPearl.setVelocity(player.getLocation().getDirection().multiply(1.5));
+                enderPearl.setShooter(player);
+            });
 
             player.playSound(player, Sound.ENTITY_ENDER_PEARL_THROW, 0.7f, 1.1f);
             player.setCooldown(Material.ENDER_PEARL, 50);
