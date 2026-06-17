@@ -55,8 +55,7 @@ public class AntiWorldDownloader extends Module implements PluginMessageListener
 
     @SuppressWarnings("NullableProblems")
     public void onPluginMessageReceived(String channel, Player player, byte[] data) {
-        if (player.hasPermission(Permissions.ANTI_WDL_BYPASS.getPermission()))
-            return;
+        if (player.hasPermission(Permissions.ANTI_WDL_BYPASS.getPermission())) return;
 
         if (!channel.equals("wdl:init")) return;
 
@@ -67,8 +66,7 @@ public class AntiWorldDownloader extends Module implements PluginMessageListener
         player.sendPluginMessage(getPlugin(), "wdl:control", out.toByteArray());
 
         if (!getPlugin().getConfigManager().getFile(ConfigType.SETTINGS).get()
-                .getBoolean("anti_wdl.admin_notify"))
-            return;
+                .getBoolean("anti_wdl.admin_notify")) return;
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission(Permissions.ANTI_WDL_NOTIFY.getPermission())) {

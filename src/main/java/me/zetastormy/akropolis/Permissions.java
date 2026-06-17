@@ -42,8 +42,8 @@ public enum Permissions {
 
     // Event permissions
     EVENT_ITEM_DROP("item.drop"), EVENT_ITEM_PICKUP("item.pickup"),
-    EVENT_PLAYER_PVP("player.pvp"), EVENT_PLAYER_MOUNT("player.mount"),
-    EVENT_BLOCK_INTERACT("block.interact"), EVENT_BLOCK_BREAK("block.break"), EVENT_BLOCK_PLACE("block.place");
+    /*EVENT_PLAYER_PVP("player.pvp"),*/ EVENT_PLAYER_MOUNT("player.mount"),
+    /*EVENT_BLOCK_INTERACT("block.interact"), EVENT_BLOCK_BREAK("block.break"), EVENT_BLOCK_PLACE("block.place")*/;
 
     private final String permission;
 

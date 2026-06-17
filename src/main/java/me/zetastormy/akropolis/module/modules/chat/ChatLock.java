@@ -53,8 +53,7 @@ public class ChatLock extends Module implements LifeCycle {
     public void onPlayerChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
 
-        if (!isChatLocked || player.hasPermission(Permissions.LOCK_CHAT_BYPASS.getPermission()))
-            return;
+        if (!isChatLocked || player.hasPermission(Permissions.LOCK_CHAT_BYPASS.getPermission())) return;
 
         event.setCancelled(true);
         Message.CHAT_LOCKED.send(player);

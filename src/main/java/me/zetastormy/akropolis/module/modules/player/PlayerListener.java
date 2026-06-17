@@ -184,8 +184,7 @@ public class PlayerListener extends Module implements LifeCycle {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (inDisabledWorld(player.getLocation()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
 
         if (joinQuitMessagesEnabled) {
             if (quitMessage.isEmpty())

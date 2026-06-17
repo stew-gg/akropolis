@@ -52,8 +52,7 @@ public class AntiSwear extends Module implements LifeCycle {
     public void onPlayerChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
 
-        if (player.hasPermission(Permissions.ANTI_SWEAR_BYPASS.getPermission()))
-            return;
+        if (player.hasPermission(Permissions.ANTI_SWEAR_BYPASS.getPermission())) return;
 
         Component message = event.originalMessage();
 

@@ -49,8 +49,7 @@ public abstract class AbstractInventory implements Listener {
     }
 
     public void setInventoryRefresh(long value) {
-        if (value <= 0)
-            return;
+        if (value <= 0) return;
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new InventoryTask(this), 0L, value);
         refreshEnabled = true;
@@ -97,8 +96,7 @@ public abstract class AbstractInventory implements Listener {
     }
 
     public void openInventory(Player player) {
-        if (getInventory() == null)
-            return;
+        if (getInventory() == null) return;
 
         player.openInventory(refreshInventory(player, getInventory()));
 

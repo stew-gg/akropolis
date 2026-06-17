@@ -82,15 +82,13 @@ public class Launchpad extends Module implements LifeCycle {
 
     @EventHandler
     public void onLaunchPadInteract(PlayerInteractEvent event) {
-        if (!event.hasBlock() || event.getAction() != Action.PHYSICAL)
-            return;
+        if (!event.hasBlock() || event.getAction() != Action.PHYSICAL) return;
 
         Player player = event.getPlayer();
         Location playerLocation = player.getLocation();
         Location blockLocation = Objects.requireNonNull(event.getClickedBlock()).getLocation();
 
-        if (inDisabledWorld(blockLocation))
-            return;
+        if (inDisabledWorld(blockLocation)) return;
 
         // Check for launchpad block and cooldown
         if (blockLocation.getBlock().getType() == topBlock && blockLocation.subtract(0, 1, 0).getBlock().getType() == bottomBlock

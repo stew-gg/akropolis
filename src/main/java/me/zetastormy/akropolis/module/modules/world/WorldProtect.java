@@ -25,10 +25,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
@@ -266,14 +263,11 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!disableBlockBreak || event.isCancelled())
-            return;
+        if (!disableBlockBreak || event.isCancelled()) return;
 
         Player player = event.getPlayer();
-        if (inDisabledWorld(player.getLocation()))
-            return;
-        if (player.hasPermission(Permissions.EVENT_BLOCK_BREAK.getPermission()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
 
         event.setCancelled(true);
 
@@ -288,13 +282,11 @@ public class WorldProtect extends Module implements LifeCycle {
     public void onBlockPlace(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-        if (!disableBlockPlace || event.isCancelled())
-            return;
+        if (!disableBlockPlace || event.isCancelled()) return;
 
         Player player = event.getPlayer();
 
-        if (inDisabledWorld(player.getLocation()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
 
         ItemStack item = event.getItem();
 
@@ -307,8 +299,7 @@ public class WorldProtect extends Module implements LifeCycle {
             return;
         }
 
-        if (player.hasPermission(Permissions.EVENT_BLOCK_PLACE.getPermission()))
-            return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
 
         event.setCancelled(true);
 
@@ -321,11 +312,9 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
-        if (!disableBlockBurn)
-            return;
+        if (!disableBlockBurn) return;
 
-        if (inDisabledWorld(event.getBlock().getLocation()))
-            return;
+        if (inDisabledWorld(event.getBlock().getLocation())) return;
 
         event.setCancelled(true);
     }
@@ -333,15 +322,13 @@ public class WorldProtect extends Module implements LifeCycle {
     // Prevent destroying of item frame/paintings
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDestroy(HangingBreakByEntityEvent event) {
-        if (!disableBlockBreak || inDisabledWorld(event.getEntity().getLocation()))
-            return;
+        if (!disableBlockBreak || inDisabledWorld(event.getEntity().getLocation())) return;
 
         Entity entity = event.getEntity();
         Entity player = event.getRemover();
 
         if (entity instanceof Painting || entity instanceof ItemFrame && player instanceof Player) {
-            if (player.hasPermission(Permissions.EVENT_BLOCK_BREAK.getPermission()))
-                return;
+            if (((Player) player).getGameMode() != GameMode.SURVIVAL) return;
 
             event.setCancelled(true);
 
@@ -356,14 +343,12 @@ public class WorldProtect extends Module implements LifeCycle {
     // Prevent items being rotated in item frame
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityInteract(PlayerInteractEntityEvent event) {
-        if (!disableBlockInteract || inDisabledWorld(event.getRightClicked().getLocation()))
-            return;
+        if (!disableBlockInteract || inDisabledWorld(event.getRightClicked().getLocation())) return;
 
         Entity entity = event.getRightClicked();
-        Entity player = event.getPlayer();
+        Player player = event.getPlayer();
 
-        if (player.hasPermission(Permissions.EVENT_BLOCK_INTERACT.getPermission()))
-            return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
 
         if (entity instanceof ItemFrame) {
             event.setCancelled(true);
@@ -379,16 +364,14 @@ public class WorldProtect extends Module implements LifeCycle {
     // Prevent items being taken from item frames
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (!disableBlockInteract || inDisabledWorld(event.getEntity().getLocation()))
-            return;
+        if (!disableBlockInteract || inDisabledWorld(event.getEntity().getLocation())) return;
 
         Entity entity = event.getEntity();
         Entity damager = event.getDamager();
 
         if (entity instanceof ItemFrame && damager instanceof Player player) {
 
-            if (player.hasPermission(Permissions.EVENT_BLOCK_INTERACT.getPermission()))
-                return;
+            if (player.getGameMode() != GameMode.SURVIVAL) return;
 
             event.setCancelled(true);
 
@@ -402,18 +385,15 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockInteract(PlayerInteractEvent event) {
-        if (!disableBlockInteract || inDisabledWorld(event.getPlayer().getLocation()))
-            return;
+        if (!disableBlockInteract || inDisabledWorld(event.getPlayer().getLocation())) return;
 
         Player player = event.getPlayer();
 
-        if (player.hasPermission(Permissions.EVENT_BLOCK_INTERACT.getPermission()))
-            return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
 
         Block block = event.getClickedBlock();
 
-        if (block == null)
-            return;
+        if (block == null) return;
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (INTERACTABLE.contains(block.getType()) || block.getType().toString().contains("POTTED")) {
@@ -431,11 +411,9 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player))
-            return;
+        if (!(event.getEntity() instanceof Player player)) return;
 
-        if (inDisabledWorld(player.getLocation()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
 
         if (disableFallDamage && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
             event.setCancelled(true);
@@ -462,11 +440,9 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler
     public void onFireSpread(BlockIgniteEvent event) {
-        if (!disableFireSpread)
-            return;
+        if (!disableFireSpread) return;
 
-        if (inDisabledWorld(event.getBlock().getLocation()))
-            return;
+        if (inDisabledWorld(event.getBlock().getLocation())) return;
 
         if (event.getCause() == BlockIgniteEvent.IgniteCause.SPREAD)
             event.setCancelled(true);
@@ -474,30 +450,24 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onFoodChange(FoodLevelChangeEvent event) {
-        if (!disableHungerLoss)
-            return;
+        if (!disableHungerLoss) return;
 
-        if (!(event.getEntity() instanceof Player player))
-            return;
+        if (!(event.getEntity() instanceof Player player)) return;
 
-        if (inDisabledWorld(player.getLocation()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
 
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDropEvent(PlayerDropItemEvent event) {
-        if (!disableItemDrop)
-            return;
+        if (!disableItemDrop) return;
 
         Player player = event.getPlayer();
 
-        if (inDisabledWorld(player.getLocation()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
 
-        if (player.hasPermission(Permissions.EVENT_ITEM_DROP.getPermission()))
-            return;
+        if (player.hasPermission(Permissions.EVENT_ITEM_DROP.getPermission())) return;
 
         event.setCancelled(true);
 
@@ -510,16 +480,13 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerPickupEvent(PlayerPickupItemEvent event) {
-        if (!disableItemPickup)
-            return;
+        if (!disableItemPickup) return;
 
         Player player = event.getPlayer();
 
-        if (inDisabledWorld(player.getLocation()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
 
-        if (player.hasPermission(Permissions.EVENT_ITEM_PICKUP.getPermission()))
-            return;
+        if (player.hasPermission(Permissions.EVENT_ITEM_PICKUP.getPermission())) return;
 
         event.setCancelled(true);
 
@@ -532,36 +499,29 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onLeafDecay(LeavesDecayEvent event) {
-        if (!disableLeafDecay)
-            return;
+        if (!disableLeafDecay) return;
 
-        if (inDisabledWorld(event.getBlock().getLocation()))
-            return;
+        if (inDisabledWorld(event.getBlock().getLocation())) return;
 
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (!disableMobSpawning)
-            return;
+        if (!disableMobSpawning) return;
 
-        if (inDisabledWorld(event.getEntity().getLocation()))
-            return;
+        if (inDisabledWorld(event.getEntity().getLocation())) return;
 
-        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM)
-            return;
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) return;
 
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWeatherChange(WeatherChangeEvent event) {
-        if (inDisabledWorld(event.getWorld()))
-            return;
+        if (inDisabledWorld(event.getWorld())) return;
 
-        if (!disableWeatherChange)
-            return;
+        if (!disableWeatherChange) return;
 
         event.setCancelled(event.toWeatherState());
     }
@@ -579,28 +539,23 @@ public class WorldProtect extends Module implements LifeCycle {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (inDisabledWorld(event.getEntity().getLocation()))
-            return;
+        if (inDisabledWorld(event.getEntity().getLocation())) return;
 
         if (disableDeathMessage)
             event.setDeathMessage(null);
 
-        if (!disableInventoryDrop)
-            return;
+        if (!disableInventoryDrop) return;
 
         event.getDrops().clear();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (!disablePlayerPvP)
-            return;
+        if (!disablePlayerPvP) return;
 
-        if (!(event.getEntity() instanceof Player player))
-            return;
+        if (!(event.getEntity() instanceof Player player)) return;
 
-        if (inDisabledWorld(player.getLocation()))
-            return;
+        if (inDisabledWorld(player.getLocation())) return;
 
         FightModeManager fightModeManager = getPlugin().getFightModeManager();
 
@@ -613,8 +568,7 @@ public class WorldProtect extends Module implements LifeCycle {
             }
         }
 
-        if (event.getDamager().hasPermission(Permissions.EVENT_PLAYER_PVP.getPermission()))
-            return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
 
         event.setCancelled(true);
 

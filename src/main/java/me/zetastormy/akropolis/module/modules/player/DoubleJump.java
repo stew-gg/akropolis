@@ -75,14 +75,10 @@ public class DoubleJump extends Module implements LifeCycle {
         Location playerLocation = player.getLocation();
 
         // Perform checks
-        if (player.hasPermission(Permissions.DOUBLE_JUMP_BYPASS.getPermission()) || player.hasPermission(Permissions.COMMAND_FLIGHT.getPermission()))
-            return;
-        else if (inDisabledWorld(playerLocation))
-            return;
-        else if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR)
-            return;
-        else if (!event.isFlying())
-            return;
+        if (player.hasPermission(Permissions.DOUBLE_JUMP_BYPASS.getPermission()) || player.hasPermission(Permissions.COMMAND_FLIGHT.getPermission())) return;
+        else if (inDisabledWorld(playerLocation)) return;
+        else if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
+        else if (!event.isFlying()) return;
         else if (onGround && player.getWorld().getBlockAt(playerLocation.subtract(0, 2, 0)).getType() == Material.AIR) {
             event.setCancelled(true);
             return;

@@ -113,8 +113,7 @@ public abstract class HotbarItem implements Listener {
     }
 
     public void giveItem(Player player) {
-        if (permission != null && !player.hasPermission(permission))
-            return;
+        if (permission != null && !player.hasPermission(permission)) return;
 
         ItemStack newItem = item.clone();
 

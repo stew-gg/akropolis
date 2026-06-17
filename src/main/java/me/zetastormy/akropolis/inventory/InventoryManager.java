@@ -88,8 +88,7 @@ public class InventoryManager {
         File[] yamlFiles = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "menus")
                 .listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
 
-        if (yamlFiles == null)
-            return;
+        if (yamlFiles == null) return;
 
         for (File file : yamlFiles) {
             String name = file.getName().replace(".yml", "");

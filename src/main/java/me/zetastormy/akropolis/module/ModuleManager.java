@@ -197,8 +197,7 @@ public class ModuleManager implements Listener {
 
     public void registerModule(Module module, String isEnabledPath) {
         if (isEnabledPath != null
-                && !plugin.getConfigManager().getFile(ConfigType.SETTINGS).get().getBoolean(isEnabledPath, false))
-            return;
+                && !plugin.getConfigManager().getFile(ConfigType.SETTINGS).get().getBoolean(isEnabledPath, false)) return;
 
         plugin.getServer().getPluginManager().registerEvents(module, plugin);
         modules.put(module.getModuleType(), module);
