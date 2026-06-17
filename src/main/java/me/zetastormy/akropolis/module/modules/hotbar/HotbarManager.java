@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import me.zetastormy.akropolis.module.modules.hotbar.items.EnderButt;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -96,6 +97,12 @@ public class HotbarManager extends Module implements LifeCycle {
 
             playerHider.setDisableMovement(hiderSection.getBoolean("disable_inventory_movement"));
             registerHotbarItem(playerHider);
+        }
+
+        ConfigurationSection pearlSection = config.getConfigurationSection("ender_pearl");
+        if (pearlSection != null) {
+            ItemStack pearlItem = ItemStackBuilder.getItemStack(pearlSection.getConfigurationSection("item")).build();
+            registerHotbarItem(new EnderButt(this, pearlItem, pearlSection.getInt("slot"), "ENDER_PEARL"));
         }
 
         giveItems();

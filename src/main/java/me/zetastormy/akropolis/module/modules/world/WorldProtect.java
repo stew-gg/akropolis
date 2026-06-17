@@ -467,7 +467,7 @@ public class WorldProtect extends Module implements LifeCycle {
 
         if (inDisabledWorld(player.getLocation())) return;
 
-        if (player.hasPermission(Permissions.EVENT_ITEM_DROP.getPermission())) return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
 
         event.setCancelled(true);
 

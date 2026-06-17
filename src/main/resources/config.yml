@@ -657,3 +657,14 @@ player_hider:
     display_name: "<gray>Players<dark_gray>: <red>Hidden <gray>(Right-Click)"
     lore:
       - "<dark_gray>» <gray>Click to show all players!"
+
+ender_pearl:
+  enabled: true
+  disable_inventory_movement: true
+  slot: 1
+  cooldown: 0 # do not change
+
+  item:
+    material: ENDER_PEARL
+    amount: 1
+    display_name: "<#225599>Ender Butt <gray>(Right-Click)"
