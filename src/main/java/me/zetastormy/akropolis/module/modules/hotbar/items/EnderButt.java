@@ -2,7 +2,9 @@ package me.zetastormy.akropolis.module.modules.hotbar.items;
 
 import me.zetastormy.akropolis.module.modules.hotbar.HotbarItem;
 import me.zetastormy.akropolis.module.modules.hotbar.HotbarManager;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
@@ -85,6 +87,12 @@ public class EnderButt extends HotbarItem {
         if (!(pearl.getShooter() instanceof Player player)) return;
 
         removePearl(player.getUniqueId());
+
+        Location loc = player.getLocation();
+        loc.getWorld().spawnParticle(Particle.PORTAL, loc, 20);
+        player.playSound(player, Sound.ENTITY_PLAYER_TELEPORT, 0.7f, 1f);
+
+        player.setCooldown(Material.ENDER_PEARL, 0);
     }
 
     private void removePearl(UUID uuid) {
