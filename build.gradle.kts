@@ -2,8 +2,8 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     java
-    id("com.gradleup.shadow") version ("9.3.0")
-    id("io.papermc.paperweight.userdev") version ("2.0.0-beta.19")
+    id("com.gradleup.shadow") version ("9.4.3")
+    id("io.papermc.paperweight.userdev") version ("2.0.0-beta.21")
 }
 
 group = "me.zetastormy"
@@ -35,7 +35,7 @@ version = buildString {
     }
 }
 
-val scoreboardLibraryVersion = "2.7.4"
+val scoreboardLibraryVersion = "2.8.0"
 
 val libsPackage = property("libsPackage") as String
 
@@ -54,8 +54,6 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("1.21.6-R0.1-SNAPSHOT")
 
-    implementation("javax.inject:javax.inject:1")
-
     implementation("net.megavex:scoreboard-library-api:$scoreboardLibraryVersion")
     runtimeOnly("net.megavex:scoreboard-library-implementation:$scoreboardLibraryVersion")
 
@@ -66,7 +64,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("com.arcaniax:HeadDatabase-API:1.3.2")
 
-    implementation("com.github.cryptomorin:XSeries:13.7.0")
+    implementation("com.github.cryptomorin:XSeries:13.7.1")
 
     compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
     compileOnly("com.github.koca2000:NoteBlockAPI:1.7.0")
