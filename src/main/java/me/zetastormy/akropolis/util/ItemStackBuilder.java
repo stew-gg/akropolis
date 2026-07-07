@@ -134,6 +134,12 @@ public class ItemStackBuilder {
             builder.withFlags(flags.toArray(new ItemFlag[0]));
         }
 
+        if (section.contains("hide_tooltip")) {
+            boolean hide = section.getBoolean("hide_tooltip", false);
+
+            builder.setHideTooltip(hide);
+        }
+
         if (section.contains("custom_model_data")) {
             List<String> data = section.getStringList("custom_model_data");
             builder.withCustomModelData(data);
@@ -150,6 +156,7 @@ public class ItemStackBuilder {
 
             for (String enchantment : rawEnchantments) {
                 String[] parts = enchantment.split(":");
+                //noinspection DataFlowIssue
                 Enchantment enchant = RegistryAccess
                                         .registryAccess()
                                         .getRegistry(RegistryKey.ENCHANTMENT)
@@ -342,6 +349,19 @@ public class ItemStackBuilder {
         itemStack.setItemMeta(itemMeta);
     }
 
+    public void setHideTooltip(boolean hide) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if (itemMeta == null) {
+            PLUGIN.getLogger().severe("Invalid item meta, could not apply hide tooltip!");
+            PLUGIN.getLogger().severe("Please check your config.yml!");
+            return;
+        }
+
+        itemMeta.setHideTooltip(hide);
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
     public void withCustomModelData(List<String> data) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
