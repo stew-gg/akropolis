@@ -359,6 +359,7 @@ public class ItemStackBuilder {
         }
 
         itemMeta.setHideTooltip(hide);
+        itemStack.setItemMeta(itemMeta);
     }
 
     @SuppressWarnings("UnstableApiUsage")
