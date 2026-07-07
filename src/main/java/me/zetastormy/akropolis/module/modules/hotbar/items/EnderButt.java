@@ -35,19 +35,24 @@ public class EnderButt extends HotbarItem {
         UUID uuid = player.getUniqueId();
 
         if (!pearls.containsKey(uuid)) {
-            playerDismounting.put(uuid, false);
-            EnderPearl pearl = player.getWorld().spawn(player.getEyeLocation(), EnderPearl.class, enderPearl -> {
-                enderPearl.addPassenger(player);
-                enderPearl.setVelocity(player.getLocation().getDirection().multiply(1.5));
-                enderPearl.setShooter(player);
-            });
-            pearls.put(uuid, pearl);
-
-            player.playSound(player, Sound.ENTITY_ENDER_PEARL_THROW, 0.7f, 1.1f);
-            player.setCooldown(Material.ENDER_PEARL, 50);
+            throwPearl(player, uuid);
         } else {
             removePearl(uuid);
+            throwPearl(player, uuid);
         }
+    }
+
+    private void throwPearl(Player player, UUID uuid) {
+        playerDismounting.put(uuid, false);
+        EnderPearl pearl = player.getWorld().spawn(player.getEyeLocation(), EnderPearl.class, enderPearl -> {
+            enderPearl.addPassenger(player);
+            enderPearl.setVelocity(player.getLocation().getDirection().multiply(1.5));
+            enderPearl.setShooter(player);
+        });
+        pearls.put(uuid, pearl);
+
+        player.playSound(player, Sound.ENTITY_ENDER_PEARL_THROW, 0.7f, 1.1f);
+        player.setCooldown(Material.ENDER_PEARL, 20);
     }
 
     @EventHandler
