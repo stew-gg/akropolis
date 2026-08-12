@@ -19,32 +19,6 @@
 
 package me.zetastormy.akropolis.module.modules.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.GameMode;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Firework;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-
 import me.zetastormy.akropolis.AkropolisPlugin;
 import me.zetastormy.akropolis.Permissions;
 import me.zetastormy.akropolis.config.ConfigType;
@@ -54,6 +28,21 @@ import me.zetastormy.akropolis.module.ModuleType;
 import me.zetastormy.akropolis.util.text.PlaceholderUtil;
 import me.zetastormy.akropolis.util.text.TextUtil;
 import net.kyori.adventure.text.Component;
+import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.meta.FireworkMeta;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerListener extends Module implements LifeCycle {
     private ConfigurationSection playersSection;
@@ -213,7 +202,7 @@ public class PlayerListener extends Module implements LifeCycle {
             return;
         }
 
-        if (player == null || !player.isOnline()) return;
+        if (!player.isOnline()) return;
 
         if (saveFlyState && playersSection != null && playersSection.contains(player.getUniqueId().toString())) {
             boolean hasFly = playersSection.getBoolean(player.getUniqueId() + ".fly");
@@ -252,7 +241,7 @@ public class PlayerListener extends Module implements LifeCycle {
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
 
-        if (player == null || !player.isOnline() || inDisabledWorld(player.getLocation())) return;
+        if (!player.isOnline() || inDisabledWorld(player.getLocation())) return;
 
         if (saveFlyState && playersSection != null && playersSection.contains(player.getUniqueId().toString())) {
             boolean hasFly = playersSection.getBoolean(player.getUniqueId() + ".fly");
