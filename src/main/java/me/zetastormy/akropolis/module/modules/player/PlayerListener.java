@@ -37,6 +37,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.jetbrains.annotations.NotNull;
@@ -185,6 +186,15 @@ public class PlayerListener extends Module implements LifeCycle {
         }
 
         player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+    }
+
+    @EventHandler
+    public void onPlayerDamaged(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        if (inDisabledWorld(player.getLocation())) return;
+
+        event.setCancelled(true);
     }
 
     @EventHandler
